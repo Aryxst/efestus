@@ -1,0 +1,17 @@
+{
+  "name": "efestus-bot",
+  "module": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "bun --bun run src/index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
