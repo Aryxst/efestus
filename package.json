@@ -14,5 +14,6 @@
  "peerDependencies": {
   "typescript": "^5.0.0"
  },
- "module": "index.ts"
+ "module": "src/index.ts",
+ "main": "src/index.ts"
 }

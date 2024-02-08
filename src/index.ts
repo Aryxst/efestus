@@ -1,14 +1,12 @@
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
-import { Glob } from 'bun';
+import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
 import log from './lib/log';
-const { TOKEN } = process.env;
-
-const glob = new Glob('*');
+const { TOKEN, GUILDID, CLIENTID } = process.env as { TOKEN: string; GUILDID: string; CLIENTID: string };
+await Bun.sleep(1000);
+const glob = new Bun.Glob('*');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 export type Efestus = Client<true>;
-
+//#region Registering commands and events
 client.commands = new Collection();
-
 for (const folder of glob.scanSync({ cwd: './src/commands/', onlyFiles: false })) {
  for (const file of glob.scanSync({ cwd: './src/commands/' + folder, absolute: true })) {
   const command = require(file);
@@ -19,7 +17,16 @@ for (const folder of glob.scanSync({ cwd: './src/commands/', onlyFiles: false })
   }
  }
 }
-
+const rest = new REST().setToken(TOKEN);
+(async () => {
+ try {
+  log('i', `Started refreshing ${client.commands.size} application (/) commands.`);
+  const data = (await rest.put(Routes.applicationGuildCommands(CLIENTID, GUILDID), { body: client.commands.map((c: any) => c.data.toJSON()) })) as ArrayLike<any>;
+  log('r', `Successfully reloaded ${data.length} application (/) commands.`);
+ } catch (error) {
+  log('e', error);
+ }
+})();
 for (const file of glob.scanSync({ cwd: './src/events/', absolute: true })) {
  const event = require(file);
  if (event.once) {
@@ -28,6 +35,7 @@ for (const file of glob.scanSync({ cwd: './src/events/', absolute: true })) {
   client.on(event.name, (...args) => event.execute(...args));
  }
 }
+//#endregion
 
 client.login(TOKEN).catch(() => {
  log('e', log.error.login);
