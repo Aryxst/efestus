@@ -1,7 +1,6 @@
 import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
-import log from './lib/log';
+import { log } from '@/lib/';
 const { TOKEN, GUILDID, CLIENTID } = process.env as { TOKEN: string; GUILDID: string; CLIENTID: string };
-await Bun.sleep(1000);
 const glob = new Bun.Glob('*');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 export type Efestus = Client<true>;

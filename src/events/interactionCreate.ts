@@ -1,5 +1,5 @@
 import { CommandInteraction, Events } from 'discord.js';
-import log from '../lib/log';
+import { log } from '@/lib/';
 
 export const name = Events.InteractionCreate;
 /** @param {import("discord.js").Interaction} interaction*/

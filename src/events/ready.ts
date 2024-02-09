@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import log from '../lib/log';
+import { log } from '@/lib/';
 import type { Efestus } from '..';
 
 export const name = Events.ClientReady;
