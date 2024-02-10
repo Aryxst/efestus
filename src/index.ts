@@ -37,5 +37,5 @@ for (const file of glob.scanSync({ cwd: './src/events/', absolute: true })) {
 //#endregion
 
 client.login(TOKEN).catch(() => {
- log('e', log.error.login);
+ log('e', log.error.client.login);
 });

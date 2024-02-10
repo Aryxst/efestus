@@ -9,7 +9,10 @@ export default Object.assign(
  },
  {
   error: {
-   login: 'Failed to login!',
+   client: { login: 'Failed to login!' },
+   command: {
+    execute: 'There was an error while executing this command!',
+   },
   },
  }
 );
