@@ -19,5 +19,5 @@ jobs:
      with:
       key: ${{ github.ref }}
       path: .cache
-   - run: pip install mkdocs-material
+   - run: pip install mkdocs-material mkdocs-minify-plugin
    - run: cd docs && mkdocs gh-deploy --force
