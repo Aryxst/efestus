@@ -27,8 +27,15 @@ theme:
     toggle:
      icon: material/brightness-4
      name: Switch to system preference
-extra_css:
-
+plugins:
+ - search
+ - minify:
+    minify_html: true
+    minify_js: true
+    minify_css: true
+    htmlmin_opts:
+     remove_comments: true
+    cache_safe: true
 markdown_extensions:
  - admonition
  - attr_list
