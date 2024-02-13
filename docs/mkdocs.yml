@@ -44,5 +44,5 @@ markdown_extensions:
  - pymdownx.snippets
  - pymdownx.superfences
  - md_in_html
-repo_url: https://github.com/aryxst/efestus-bot
-repo_name: aryxst/efestus-bot
+repo_url: https://github.com/aryxst/efestus
+repo_name: aryxst/efestus

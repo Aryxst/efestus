@@ -33,7 +33,7 @@ curl https://bun.sh/install | bash
 ```
 Clone the repository
 ```
-git clone https://github.com/aryxst/efestus-bot.git
+git clone https://github.com/aryxst/efestus.git
 ```
 Install dependencies and run the bot:
 ```
@@ -43,4 +43,4 @@ bun run start
 ------
 ## **Contributing**
 
-<u>Feel free</u> to contribute via github by opening a [pull request](https://github.com/aryxst/efestus-bot/pulls) to merge your changes or open an [issue](https://github.com/Aryxst/efestus-bot/issues) to request or suggest a feature!
+<u>Feel free</u> to contribute via github by opening a [pull request](https://github.com/aryxst/efestus/pulls) to merge your changes or open an [issue](https://github.com/Aryxst/efestus/issues) to request or suggest a feature!
