@@ -3,7 +3,7 @@ hide:
   - navigation
 ---
 # **Home**
-<img src="/assets/logo.jpg" width="300px" style="border-radius: 50%; overflow:hidden"/>
+<img src="./assets/logo.jpg" width="300px" style="border-radius: 50%; overflow:hidden"/>
 
 Efestus is a Discord bot confusing yet powerful because of the tools it was built with. Its written in full typescript and developed in the [Bun](https://bun.sh/) Runtime.
 
