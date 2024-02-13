@@ -1,6 +1,8 @@
 import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { log } from '@/lib/';
-const { TOKEN, GUILDID, CLIENTID } = process.env as { TOKEN: string; GUILDID: string; CLIENTID: string };
+import db from './database';
+
+const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
 const glob = new Bun.Glob('*');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 export type Efestus = Client<true>;
@@ -20,7 +22,7 @@ const rest = new REST().setToken(TOKEN);
 (async () => {
  try {
   log('i', `Started refreshing ${client.commands.size} application (/) commands.`);
-  const data = (await rest.put(Routes.applicationGuildCommands(CLIENTID, GUILDID), { body: client.commands.map((c: any) => c.data.toJSON()) })) as ArrayLike<any>;
+  const data = (await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: client.commands.map((c: any) => c.data.toJSON()) })) as ArrayLike<any>;
   log('r', `Successfully reloaded ${data.length} application (/) commands.`);
  } catch (error) {
   log('e', error);

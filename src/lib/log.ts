@@ -14,5 +14,13 @@ export default Object.assign(
     execute: 'There was an error while executing this command!',
    },
   },
+  info: {
+   table: {
+    /** 1: property 2: table name 3: row id */
+    update_entry: 'Successfully updated property %s in table %s on row %s',
+    /** 1: row id 2: table name */
+    not_exist: 'File with id "%s" doesn\'t exist in table %s.',
+   },
+  },
  }
 );

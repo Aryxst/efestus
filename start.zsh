@@ -1,0 +1,1 @@
+bunx pm2 start bun --name "efestus-bot" -- run start

@@ -1,7 +1,7 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
- .setName('purge')
+ .setName('clear')
  .setDescription('Delete an amount of messages.')
  .addIntegerOption(option => option.setName('count').setDescription('The amount of messages to delete.').setMaxValue(100).setRequired(true));
 export async function execute(interaction: CommandInteraction<any>) {

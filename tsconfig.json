@@ -20,6 +20,7 @@
   "forceConsistentCasingInFileNames": true,
   "paths": {
    "@/*": ["./src/*"]
-  }
+  },
+  "types": ["@types/bun"]
  }
 }
