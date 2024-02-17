@@ -5,3 +5,4 @@ node_modules/
 docs/venv
 jobs
 *.sqlite
+*log*
