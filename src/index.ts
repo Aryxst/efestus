@@ -1,17 +1,19 @@
-import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
+import { Client, Collection, REST, Routes } from 'discord.js';
 import { log } from '@/lib/';
 import db from './database';
+import config from '../config';
+
 const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
 const glob = new Bun.Glob('*');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: ['Guilds'] });
 export type Efestus = Client<true>;
-//#region Registering commands and events
+
 client.commands = new Collection();
 for (const folder of glob.scanSync({ cwd: './src/commands/', onlyFiles: false })) {
  for (const file of glob.scanSync({ cwd: './src/commands/' + folder, absolute: true })) {
   const command = require(file);
   if ('data' in command && 'execute' in command) {
-   client.commands.set(command.data.name, command);
+   config.disabled.indexOf(command.data.name) == -1 && client.commands.set(command.data.name, command);
   } else {
    log('w', `The command at ${file} is missing a required "data" or "execute" property.`);
   }
@@ -35,7 +37,6 @@ for (const file of glob.scanSync({ cwd: './src/events/', absolute: true })) {
   client.on(event.name, (...args) => event.execute(...args));
  }
 }
-//#endregion
 
 client.login(TOKEN).catch(() => {
  log('e', log.error.client.login);
