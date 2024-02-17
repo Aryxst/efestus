@@ -1,7 +1,6 @@
 import { Client, Collection, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { log } from '@/lib/';
 import db from './database';
-
 const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
 const glob = new Bun.Glob('*');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });

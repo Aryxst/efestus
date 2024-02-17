@@ -3,7 +3,8 @@
  "type": "module",
  "version": "0.1",
  "scripts": {
-  "start": "bun --smol --bun run src/index.ts"
+  "start": "bun --smol --bun run src/index.ts",
+  "dev": "bun --smol --bun --watch run src/index.ts"
  },
  "dependencies": {
   "chalk": "^5.3.0",

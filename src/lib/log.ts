@@ -1,10 +1,11 @@
 import chalk from 'chalk';
 
-type LogType = 'w' | 'e' | 'i' | 'r' | 'd';
-const LogBinds: Record<LogType, string> = { w: chalk.yellow('[WARN]'), e: chalk.red('[ERROR]'), i: chalk.cyan('[INFO]'), r: chalk.green('[READY]'), d: chalk.gray('[DEBUG]') };
+type LogTypes = 'w' | 'e' | 'i' | 'r' | 'd';
+
+const LogBinds: Record<LogTypes, string> = { w: chalk.yellow('[WARN]'), e: chalk.red('[ERROR]'), i: chalk.cyan('[INFO]'), r: chalk.green('[READY]'), d: chalk.gray('[DEBUG]') };
 
 export default Object.assign(
- (type: LogType, msg: any, ...args: any[]) => {
+ <Log>(type: LogTypes, msg: Log, ...args: Array<any>) => {
   console.log(`${LogBinds[type]} - ${msg}`, ...args, `| ${new Date().toLocaleTimeString()}`);
  },
  {
@@ -12,6 +13,7 @@ export default Object.assign(
    client: { login: 'Failed to login!' },
    command: {
     execute: 'There was an error while executing this command!',
+    uploadfetch: { content: 'Error while fetching resource, is the url correct?', ephemeral: true },
    },
   },
   info: {
