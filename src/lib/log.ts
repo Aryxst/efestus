@@ -12,8 +12,8 @@ export default Object.assign(
   error: {
    client: { login: 'Failed to login!' },
    command: {
-    execute: 'There was an error while executing this command!',
-    uploadfetch: { content: 'Error while fetching resource, is the url correct?', ephemeral: true },
+    execute: { content: 'There was an error while executing this command!', ephemeral: true },
+    upload_fetch: { content: 'Error while fetching resource, is the url correct?', ephemeral: true },
    },
   },
   info: {
