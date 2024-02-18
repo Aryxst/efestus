@@ -1,0 +1,32 @@
+import config from '@/config';
+import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+
+export const data = new SlashCommandBuilder().setName('dog').setDescription('Find a cute dog picture!');
+export async function execute(interaction: CommandInteraction<any>) {
+ await interaction.deferReply();
+ await interaction.editReply('Finding a cute doggo...');
+
+ const headers = new Headers({
+  'Content-Type': 'application/json',
+ });
+ fetch(config.apis.dog, {
+  method: 'GET',
+  headers: headers,
+  redirect: 'follow',
+ })
+  .then(response => response.json())
+  .then(async result => {
+   await interaction.editReply({
+    content: null,
+    embeds: [
+     new EmbedBuilder({
+      title: '🐶Woof!',
+      image: { url: result.url },
+     }),
+    ],
+   });
+  })
+  .catch(async () => {
+   await interaction.editReply('An error occured!');
+  });
+}
