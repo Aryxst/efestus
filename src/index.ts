@@ -1,8 +1,8 @@
 import { Client, Collection, REST, Routes } from 'discord.js';
 import { log } from '@/lib/';
 import db from './database';
-import config from '../config';
-
+import config from './config';
+/* import '../jobs/refetch-data'; */
 const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
 const glob = new Bun.Glob('*');
 const client = new Client({ intents: ['Guilds'] });

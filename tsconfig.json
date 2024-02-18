@@ -22,5 +22,6 @@
    "@/*": ["./src/*"]
   },
   "types": ["@types/bun"]
- }
+ },
+ "exclude": ["./docs/venv"]
 }

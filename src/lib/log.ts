@@ -1,5 +1,5 @@
+// WARNING: Kind of broken, only use with bot logs: not scripts logs.
 import chalk from 'chalk';
-
 type LogTypes = 'w' | 'e' | 'i' | 'r' | 'd';
 
 const LogBinds: Record<LogTypes, string> = { w: chalk.yellow('[WARN]'), e: chalk.red('[ERROR]'), i: chalk.cyan('[INFO]'), r: chalk.green('[READY]'), d: chalk.gray('[DEBUG]') };
