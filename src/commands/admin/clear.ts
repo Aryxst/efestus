@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction: CommandInteraction<any>) {
  const res = await interaction.channel?.bulkDelete(interaction.options.get('count')?.value as number);
 
- await interaction.reply({ content: `Successfully deleted ${res?.size} messages!`, ephemeral: true }).then(async msg => {
+ await interaction.reply(`Successfully deleted ${res?.size} messages!`).then(async msg => {
   await Bun.sleep(2000);
   msg.delete();
  });

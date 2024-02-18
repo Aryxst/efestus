@@ -83,7 +83,7 @@ export async function execute(interaction: CommandInteraction<any>) {
    } else if (end - start < 25) {
     await interaction.reply('Cannot list more than 25 files at a time!');
    } else {
-    await interaction.reply('Cannot access non existent files. Either there are no available files or you need to provide a valid range.');
+    await interaction.reply('Either there are no available files or you need to provide a valid range.');
    }
    break;
   }
