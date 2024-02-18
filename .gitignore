@@ -6,3 +6,4 @@ docs/venv
 jobs
 *sqlite*
 *log*
+*out*
