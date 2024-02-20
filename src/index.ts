@@ -41,7 +41,3 @@ for (const file of glob.scanSync({ cwd: './src/events/', absolute: true })) {
 client.login(TOKEN).catch(() => {
  log('e', log.error.client.login);
 });
-// Listen for messages
-socket.addEventListener('message', event => {
- log('i', 'Message from server %s', event.data);
-});
