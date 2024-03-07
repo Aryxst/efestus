@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS files (
   name VARCHAR(255) NOT NULL,
   upload_date DATE NOT NULL,
   buffer BLOB NOT NULL,
-  attachment_url VARCHART(255) DEFAULT ''
+  attachment_url VARCHAR(255) DEFAULT ''
 );
 `);
 
