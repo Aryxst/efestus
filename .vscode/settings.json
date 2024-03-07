@@ -10,6 +10,8 @@
   "**/.DS_Store": true,
   "**/Thumbs.db": true,
   "node_modules": true,
-  "bun.lockb": true
+  "bun.lockb": true,
+  ".github": true,
+  ".prettier*": true
  }
 }

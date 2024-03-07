@@ -1,17 +1,19 @@
+// WARNING: Kind of broken, only use with bot logs: not scripts logs.
 import chalk from 'chalk';
+type LogTypes = 'w' | 'e' | 'i' | 'r' | 'd';
 
-type LogType = 'w' | 'e' | 'i' | 'r' | 'd';
-const LogBinds: Record<LogType, string> = { w: chalk.yellow('[WARN]'), e: chalk.red('[ERROR]'), i: chalk.cyan('[INFO]'), r: chalk.green('[READY]'), d: chalk.gray('[DEBUG]') };
+const LogBinds: Record<LogTypes, string> = { w: chalk.yellow('[WARN]'), e: chalk.red('[ERROR]'), i: chalk.cyan('[INFO]'), r: chalk.green('[READY]'), d: chalk.gray('[DEBUG]') };
 
 export default Object.assign(
- (type: LogType, msg: any, ...args: any[]) => {
+ <Log>(type: LogTypes, msg: Log, ...args: Array<any>) => {
   console.log(`${LogBinds[type]} - ${msg}`, ...args, `| ${new Date().toLocaleTimeString()}`);
  },
  {
   error: {
    client: { login: 'Failed to login!' },
    command: {
-    execute: 'There was an error while executing this command!',
+    execute: { content: 'There was an error while executing this command!', ephemeral: true },
+    upload_fetch: { content: 'Error while fetching resource, is the url correct?', ephemeral: true },
    },
   },
   info: {

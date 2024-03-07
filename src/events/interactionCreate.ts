@@ -15,15 +15,9 @@ export async function execute(interaction: CommandInteraction<any>) {
  } catch (error) {
   log('e', error as any);
   if (interaction.replied || interaction.deferred) {
-   await interaction.followUp({
-    content: log.error.command.execute,
-    ephemeral: true,
-   });
+   await interaction.followUp(log.error.command.execute);
   } else {
-   await interaction.reply({
-    content: log.error.command.execute,
-    ephemeral: true,
-   });
+   await interaction.reply(log.error.command.execute);
   }
  }
 }
