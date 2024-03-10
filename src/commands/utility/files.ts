@@ -51,7 +51,6 @@ export const data = new SlashCommandBuilder()
  );
 export async function execute(interaction: CommandInteraction<any>) {
  const cmd = interaction.options.data[0];
-
  switch (cmd.name) {
   case 'get': {
    const id = cmd.options?.[0].value;
@@ -75,36 +74,33 @@ export async function execute(interaction: CommandInteraction<any>) {
     await interaction.reply({
      content: `>>> There are currently ${rows} saved files\n${res
       .slice(start - 1, end)
-      .map(file => `${file.id}) ${file.attachment_url} - Uploaded on ${file.upload_date}`)
+      .map(file => `${file.id}) ${file.attachment_url || 'No attachment'} - Uploaded on ${file.upload_date}`)
       .join('\n')}
       `,
      flags: ['SuppressEmbeds'],
     });
-   } else if (end - start < 25) {
+   } else if (end - start < 25 && end - start > 0) {
     await interaction.reply('Cannot list more than 25 files at a time!');
    } else {
     await interaction.reply('Either there are no available files or you need to provide a valid range.');
    }
+
    break;
   }
   case 'save': {
    const sub_option = cmd.options?.[0]?.options;
 
+   log('i', JSON.stringify(sub_option, null, 2));
    if (cmd.options?.[0]?.name == 'fromdisk') {
-    const res = await fetch(sub_option?.[0].attachment?.url as string);
-    if (res.status < 400) {
-     upload_file(sub_option?.[0].attachment?.name as string, sub_option?.[0].attachment?.url as string);
-     await interaction.reply(`Successfully uploaded file! With id ${(all_files_count_query.get() as { rows: number }).rows}`);
-    } else {
-     await interaction.reply(log.error.command.upload_fetch);
-    }
+    upload_file(sub_option?.[0].attachment?.name as string, sub_option?.[0].attachment?.url as string);
+    await interaction.reply(`Successfully uploaded file! With id ${(all_files_count_query.get() as { rows: number }).rows}`);
    } else {
     const url = sub_option?.[0].value as string;
     const file_name = sub_option?.[1].value as string;
     const res = await fetch(url);
     if (res.status < 400) {
      const buffer = Buffer.from(await res.arrayBuffer());
-     const attachment = new AttachmentBuilder(buffer);
+     const attachment = new AttachmentBuilder(buffer, { name: file_name });
      const message = await interaction.reply({ content: "Successfully uploaded file! Here' the result:", files: [attachment], fetchReply: true });
      upload_file(file_name, Array.from(message.attachments.entries())[0][1].url as string);
     } else {

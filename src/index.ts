@@ -5,8 +5,8 @@ import config from './config';
 /* import '../jobs/refetch-data'; */
 const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
 const glob = new Bun.Glob('*');
-const client = new Client({ intents: ['Guilds'] });
-export type Efestus = Client<true>;
+const client = new Client({ intents: ['Guilds'] }) as Efestus;
+export type Efestus = Client<true> & { commands: Collection<unknown, unknown> };
 
 client.commands = new Collection();
 for (const folder of glob.scanSync({ cwd: './src/commands/', onlyFiles: false })) {
@@ -19,11 +19,11 @@ for (const folder of glob.scanSync({ cwd: './src/commands/', onlyFiles: false })
   }
  }
 }
-const rest = new REST().setToken(TOKEN);
+const rest = new REST().setToken(TOKEN as string);
 (async () => {
  try {
   log('i', `Started refreshing ${client.commands.size} application (/) commands.`);
-  const data = (await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: client.commands.map((c: any) => c.data.toJSON()) })) as ArrayLike<any>;
+  const data = (await rest.put(Routes.applicationGuildCommands(CLIENT_ID as string, GUILD_ID as string), { body: client.commands.map((c: any) => c.data.toJSON()) })) as ArrayLike<any>;
   log('r', `Successfully reloaded ${data.length} application (/) commands.`);
  } catch (error) {
   log('e', error);
