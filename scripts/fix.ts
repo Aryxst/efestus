@@ -1,4 +1,5 @@
 import db from '@/database';
+//This script isn't a migration it just sanitaizes the database
 console.clear();
 console.log(`\nStarting migration...\n`);
 const start = performance.now();

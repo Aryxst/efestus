@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
-
+// This command generates a random number in the given range
 export const data = new SlashCommandBuilder()
  .setName('rand')
  .setDescription('Get a random number.')
