@@ -1,12 +1,13 @@
 import { Database } from 'bun:sqlite';
 const db = new Database(import.meta.dir + '/db.sqlite', { create: true });
+// This enables WAL mode, for more info see: https://www.sqlite.org/wal.html
 db.exec('PRAGMA journal_mode = WAL;');
+// This creates the tables
 export const tables = [
  `
 CREATE TABLE IF NOT EXISTS files (
   name VARCHAR(255) NOT NULL,
   upload_date DATE NOT NULL,
-  buffer BLOB NOT NULL,
   attachment_url VARCHAR(255) DEFAULT ''
 );
 `,
@@ -14,5 +15,5 @@ CREATE TABLE IF NOT EXISTS files (
 for (const table of tables) {
  db.exec(table);
 }
-
+// Export for usage in all files
 export default db;

@@ -2,6 +2,7 @@ import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.j
 import config from '../../config';
 
 export const data = new SlashCommandBuilder().setName('cat').setDescription('Find a cute cat picture!');
+// This command is used to view a cute cat
 export async function execute(interaction: CommandInteraction<any>) {
  await interaction.deferReply();
  await interaction.editReply('Finding a cute cat...');
@@ -9,7 +10,7 @@ export async function execute(interaction: CommandInteraction<any>) {
  const headers = new Headers({
   'Content-Type': 'application/json',
   'x-api-key': process.env.CATAPIKEY,
- });
+ } as HeadersInit);
 
  fetch(config.apis.cat, {
   method: 'GET',

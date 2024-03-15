@@ -1,7 +1,7 @@
 import { Database } from 'bun:sqlite';
 import { tables } from '@/database';
-import './migrate';
-
+import './fix';
+// This script will fill the database empty rowid spots
 if (confirm('Were all tables backed up correctly') && confirm('Are you sure? If not data could be lost!')) {
  const db = new Database(import.meta.dir + '/out/db/sanitezed.sqlite', { create: true });
  db.exec('PRAGMA journal_mode = WAL;');

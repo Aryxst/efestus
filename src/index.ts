@@ -1,43 +1,12 @@
 import { Client, Collection, REST, Routes } from 'discord.js';
 import { log } from '@/lib/';
 import db from './database';
-import config from './config';
-/* import '../jobs/refetch-data'; */
-const { TOKEN, GUILD_ID, CLIENT_ID } = process.env;
-const glob = new Bun.Glob('*');
-const client = new Client({ intents: ['Guilds'] });
-export type Efestus = Client<true>;
+import register from './register';
+const { TOKEN } = process.env;
 
-client.commands = new Collection();
-for (const folder of glob.scanSync({ cwd: './src/commands/', onlyFiles: false })) {
- for (const file of glob.scanSync({ cwd: './src/commands/' + folder, absolute: true })) {
-  const command = require(file);
-  if ('data' in command && 'execute' in command) {
-   config.disabled.indexOf(command.data.name) == -1 && client.commands.set(command.data.name, command);
-  } else {
-   log('w', `The command at ${file} is missing a required "data" or "execute" property.`);
-  }
- }
-}
-const rest = new REST().setToken(TOKEN);
-(async () => {
- try {
-  log('i', `Started refreshing ${client.commands.size} application (/) commands.`);
-  const data = (await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: client.commands.map((c: any) => c.data.toJSON()) })) as ArrayLike<any>;
-  log('r', `Successfully reloaded ${data.length} application (/) commands.`);
- } catch (error) {
-  log('e', error);
- }
-})();
-for (const file of glob.scanSync({ cwd: './src/events/', absolute: true })) {
- const event = require(file);
- if (event.once) {
-  client.once(event.name, (...args) => event.execute(...args));
- } else {
-  client.on(event.name, (...args) => event.execute(...args));
- }
-}
-
+const client = new Client({ intents: ['Guilds'] }) as Efestus;
+export type Efestus = Client<true> & { commands: Collection<unknown, unknown> };
+register(client);
 client.login(TOKEN).catch(() => {
  log('e', log.error.client.login);
 });
