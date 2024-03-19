@@ -3,10 +3,9 @@
  "type": "module",
  "version": "0.1",
  "scripts": {
-  "start": "bun run build && bun --smol --bun run out/index.js",
+  "start": "bun run --bun --smol src/index.ts",
   "dev": "bun --smol --bun --watch run src/index.ts",
-  "db:fix": "rm -rf ./out/db/* && bun --bun run scripts/fillempty.ts",
-  "build": "bun build src/index.ts --target bun --format esm --outdir ./out --minify"
+  "db:fix": "rm -rf ./out/db/* && bun --bun run scripts/fillempty.ts"
  },
  "dependencies": {
   "@types/node-schedule": "^2.1.6",
