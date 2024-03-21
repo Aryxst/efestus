@@ -1,7 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import type { CommandInteraction } from 'discord.js';
 
-// This command provides basic general information
 export const data = new SlashCommandBuilder()
  .setName('info')
  .setDescription('Provides general information related to the guild.')
@@ -10,7 +9,6 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction: CommandInteraction) {
  const cmd_name = interaction.options.data[0].name;
  switch (cmd_name) {
-  // This subcommand provides information about the bot
   case 'bot':
    {
     await interaction.reply(
@@ -23,9 +21,9 @@ Platform: ${process.platform}
     );
    }
    break;
-  // This subcommand provides information about the bot
   case 'server': {
    await interaction.reply(`This server is called "${interaction?.guild?.name}" and has ${interaction?.guild?.memberCount} members.`);
+   break;
   }
  }
 }

@@ -4,7 +4,6 @@ export const data = new SlashCommandBuilder()
  .setName('avatar')
  .setDescription("View a user's avatar.")
  .addUserOption(option => option.setName('user').setDescription('Specify the user you want to get the avatar from.').setRequired(false));
-// This command is used to view a user's avatar
 export async function execute(interaction: CommandInteraction<any>) {
- await interaction.reply((interaction.options.getUser('user') ?? interaction.user).avatarURL() as string);
+ await interaction.reply((interaction.options.getUser('user') ?? interaction.user).avatarURL()!);
 }

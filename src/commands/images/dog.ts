@@ -2,7 +2,6 @@ import config from '@/config';
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder().setName('dog').setDescription('Find a cute dog picture!');
-// This command is used to view a cute dog
 export async function execute(interaction: CommandInteraction<any>) {
  await interaction.deferReply();
  await interaction.editReply('Finding a cute doggo...');

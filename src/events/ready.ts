@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { log } from '@/lib/';
+import log from '@/lib/log';
 
 import type { Efestus } from '..';
 
