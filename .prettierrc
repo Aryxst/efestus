@@ -1,0 +1,7 @@
+{
+ "arrowParens": "avoid",
+ "singleQuote": true,
+ "printWidth": 150,
+ "tabWidth": 1,
+ "plugins": ["prettier-plugin-pkg"]
+}

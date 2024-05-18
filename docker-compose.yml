@@ -1,0 +1,9 @@
+services:
+ bot:
+  build: .
+  container_name: efestus-bot_dev
+  volumes:
+   - ./src/db:/app/src/db
+  environment:
+   - NODE_ENV=production
+  restart: always

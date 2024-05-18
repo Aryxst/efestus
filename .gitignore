@@ -1,0 +1,13 @@
+.env*
+test.*
+node_modules/
+*test*
+docs/venv
+jobs
+*sqlite*
+*.db
+*log*
+*out*
+!.env.project
+!.env.vault
+drizzle

@@ -1,0 +1,3 @@
+- by default enable admin commands
+- start implementing embeds
+- add github file embed command, also works with images. Supports line selection like in gh e.g "...#L88-L100"
