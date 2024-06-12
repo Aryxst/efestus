@@ -1,3 +1,7 @@
-- by default enable admin commands
-- start implementing embeds
-- add github file embed command, also works with images. Supports line selection like in gh e.g "...#L88-L100"
+- chore(deps): bump dependencies
+- refactor: apply minor code refactors
+- feat(cli): added `say` command
+- style(prettier): reduce print width from `150` to `80`
+- refactor(db): change migration folder from `./drizzle` to `./src/db/migrations`
+- fix(logging): restore `./src/log.ts` file
+- chore(scripts): add `db:generate` script to `package.json`

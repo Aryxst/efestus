@@ -1,0 +1,13 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1727529103534,
+      "tag": "0000_magical_jack_power",
+      "breakpoints": true
+    }
+  ]
+}

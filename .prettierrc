@@ -1,7 +1,7 @@
 {
  "arrowParens": "avoid",
  "singleQuote": true,
- "printWidth": 150,
+ "printWidth": 80,
  "tabWidth": 1,
  "plugins": ["prettier-plugin-pkg"]
 }

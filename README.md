@@ -11,7 +11,6 @@ Efestus is a Discord bot confusing yet powerful because of the tools it was buil
 - ⚡ **Fast**: Efestus is built with Bun, the all-in-one Javascript runtime built for speed;
 - 🚀 **Optimization First**: 
     - Database experience is enhanced by Bun's `sqlite` module;
-    - Delegate resource-intensive tasks to background processes, freeing up the main thread;
 - 🧪 **Customizable**: The codebase its quite simple to understand.
 
 
@@ -26,22 +25,37 @@ Requirements:
 
   * [Bun](https://bun.sh/) >= 1.0.26
   * Typescript >= 5.2
-  * Linux and WSL(tested), MacOS(not tested), Windows([coming soon](https://github.com/oven-sh/bun/issues/159/))
+  * Windows, Linux(or WSL) or MacOS(not tested)
 ### Bun
 Install [Bun](https://bun.sh/)
 ```bash
+# on Linux & MacOS
 curl https://bun.sh/install | bash
+# on Windows
+powershell -c "irm bun.sh/install.ps1 | iex"
 ```
 Clone the repository
 ```bash
 git clone https://github.com/aryxst/efestus-bot.git
 ```
-Install dependencies and run the bot:
+
+Create a `.env` file at the root of the cloned repository with this format:
+```ini
+BOT_TOKEN=<YOUR BOT_TOKEN>
+GUILD_ID=<YOUR GUILD_ID>
+CLIENT_ID=<YOUR CLIENT_ID>
+```
+Run the following:
 ```bash
-bun i
+# Install dependencies
+bun install --production
+# Init DB
+bun db:generate
+bun db:migrate
+# Run bot
 bun run start
 ```
 ------
 ## **Contributing**
 
-<u>Feel free</u> to open a pull request on github for me to merge your changes or just open an issue to request/suggest features, changes and such!
+<u>Feel free</u> to open a pull request or an issue.

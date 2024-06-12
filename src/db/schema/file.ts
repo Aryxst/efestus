@@ -1,6 +1,6 @@
-import { sql } from 'drizzle-orm';
-import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 import { createId } from '@paralleldrive/cuid2';
+import { sql } from 'drizzle-orm';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const file = sqliteTable('file', {
  id: text('id')
@@ -8,7 +8,7 @@ export const file = sqliteTable('file', {
   .$defaultFn(() => createId()),
  ownerId: integer('ownerId').notNull(),
  name: text('name').notNull(),
- uploadedAt: integer('joinedAt', { mode: 'timestamp_ms' })
+ createdAt: integer('createdAt', { mode: 'timestamp_ms' })
   .notNull()
   .$defaultFn(() => sql`(unixepoch() * 1000)`),
  attachmentUrl: text('attachmentUrl').notNull(),

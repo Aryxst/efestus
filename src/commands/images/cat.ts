@@ -1,7 +1,13 @@
-import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import config from '@/config';
+import {
+ CommandInteraction,
+ EmbedBuilder,
+ SlashCommandBuilder,
+} from 'discord.js';
 
-export const data = new SlashCommandBuilder().setName('cat').setDescription('Find a cute cat picture!');
+export const data = new SlashCommandBuilder()
+ .setName('cat')
+ .setDescription('Find a cute cat picture!');
 
 type Result = Array<{ url: string }>;
 
@@ -23,7 +29,9 @@ export async function execute(interaction: CommandInteraction<any>) {
   .then(async result => {
    await interaction.editReply({
     content: null,
-    embeds: [new EmbedBuilder().setTitle('Meow!😺').setImage((result as Result)[0].url)],
+    embeds: [
+     new EmbedBuilder().setTitle('Meow!😺').setImage((result as Result)[0].url),
+    ],
    });
   })
   .catch(async () => {

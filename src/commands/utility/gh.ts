@@ -1,5 +1,9 @@
 import { isImage } from '@/lib/is-image';
-import { AttachmentBuilder, CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import {
+ AttachmentBuilder,
+ CommandInteraction,
+ SlashCommandBuilder,
+} from 'discord.js';
 
 export const data = new SlashCommandBuilder()
  .setName('gh')
@@ -8,8 +12,14 @@ export const data = new SlashCommandBuilder()
   cmd
    .setName('get')
    .setDescription('Get a file content/preview from github.')
-   .addStringOption(option => option.setName('url').setDescription('The file path to get.').setRequired(true)),
+   .addStringOption(option =>
+    option
+     .setName('url')
+     .setDescription('The file path to get.')
+     .setRequired(true),
+   ),
  );
+
 export async function execute(interaction: CommandInteraction<any>) {
  if (!interaction.isChatInputCommand()) return;
  const baseUrl = interaction.options.getString('url', true);
@@ -19,15 +29,22 @@ export async function execute(interaction: CommandInteraction<any>) {
   return;
  }
 
- const rawUrl = baseUrl.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+ const rawUrl = baseUrl
+  .replace('github.com', 'raw.githubusercontent.com')
+  .replace('/blob/', '/');
 
- const [fileName, lineArgs] = rawUrl.split('/').pop()?.split('#') || ([rawUrl.split('/').pop(), undefined] as [string?, string?]);
+ const [fileName, lineArgs] =
+  rawUrl.split('/').pop()?.split('#') ||
+  ([rawUrl.split('/').pop(), undefined] as [string?, string?]);
 
  if (isImage(fileName!)) {
   await interaction.reply({ files: [new AttachmentBuilder(rawUrl)] });
   return;
  }
- const [start, end] = (lineArgs?.replace(/L/g, '')?.split('-') || [undefined, undefined]) as [string?, string?];
+ const [start, end] = (lineArgs?.replace(/L/g, '')?.split('-') || [
+  undefined,
+  undefined,
+ ]) as [string?, string?];
 
  console.log({ fileName, lineArgs, start, end });
 
@@ -40,11 +57,16 @@ export async function execute(interaction: CommandInteraction<any>) {
       .slice(+start! - 1, +end! || +start!)
       .join('\n')
    : responseText;
-  const attachment = new AttachmentBuilder(Buffer.from(text), { name: fileName });
+  const attachment = new AttachmentBuilder(Buffer.from(text), {
+   name: fileName,
+  });
   await interaction.reply({
    files: [attachment],
   });
  } else {
-  await interaction.reply('Error while fetching resource, is the url correct?');
+  await interaction.reply({
+   content: 'Error while fetching resource, is the url correct?',
+   ephemeral: true,
+  });
  }
 }

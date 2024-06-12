@@ -6,7 +6,7 @@ docs/venv
 jobs
 *sqlite*
 *.db
-*log*
+*.log
 *out*
 !.env.project
 !.env.vault

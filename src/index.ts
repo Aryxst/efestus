@@ -1,14 +1,15 @@
-import { Client, type Collection } from 'discord.js';
-import log from './lib/log';
+import { type Collection, Client } from 'discord.js';
+import { log } from './lib/log';
 import register from './register';
 
-const { TOKEN } = process.env;
+const { BOT_TOKEN } = process.env;
 
 const client = new Client({ intents: ['Guilds'] }) as Efestus;
 export interface Efestus extends Client<true> {
  commands: Collection<unknown, unknown>;
 }
 register(client);
-client.login(TOKEN).catch(() => {
+client.login(BOT_TOKEN).catch(error => {
  log('e', 'Failed to login!');
+ console.log(error);
 });
