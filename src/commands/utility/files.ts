@@ -1,12 +1,12 @@
 import { SlashCommandBuilder, AttachmentBuilder, type AutocompleteInteraction, type CommandInteraction, EmbedBuilder } from 'discord.js';
-import { eq } from 'drizzle-orm';
+import { and, eq, lte } from 'drizzle-orm';
 import { db, schema } from '@/db';
 import log from '@/lib/log';
 
 const getUserFiles = (userId: number) => db.select().from(schema.file).where(eq(schema.file.ownerId, userId)).all();
 export const data = new SlashCommandBuilder()
  .setName('db')
- .setDescription('Interact with the public database.')
+ .setDescription('Interact with the attachment database.')
  .addSubcommand(cmd =>
   cmd
    .setName('get')
@@ -18,6 +18,20 @@ export const data = new SlashCommandBuilder()
    .setName('delete')
    .setDescription('Delete a file from the database.')
    .addStringOption(option => option.setName('name').setDescription('The name of the file.').setAutocomplete(true).setRequired(true)),
+ )
+ .addSubcommand(cmd =>
+  cmd
+   .setName('bulk_delete')
+   .setDescription('Bulk deletes files from the database.')
+   .addIntegerOption(option =>
+    option
+     .setName('older_than')
+     .setDescription('A filter to only delete files older than "x" days.')
+     .setMinValue(1)
+     /**I'm not so sure of the attachment's lifetime. Going to put it at 30 days for now */
+     .setMaxValue(30)
+     .setRequired(true),
+   ),
  )
  .addSubcommand(cmd =>
   cmd
@@ -54,13 +68,49 @@ export async function execute(interaction: CommandInteraction<any>) {
    const index = interaction.options.getString('name', true);
    const file = files[+index];
    await interaction.reply({
-    embeds: [
-     new EmbedBuilder()
-      .setTitle(file.name)
-      .setDescription(`${file.attachmentUrl} - Uploaded on ${new Date(file.uploadedAt).toLocaleDateString('en-US')}`),
-    ],
+    files: [new AttachmentBuilder(Buffer.from(await (await fetch(file.attachmentUrl)).arrayBuffer()), { name: file.name })],
     ephemeral: true,
    });
+   break;
+  }
+  case 'delete': {
+   const files = getUserFiles(+interaction.user.id);
+   const index = interaction.options.getString('name', true);
+   const file = files[+index];
+   try {
+    await db.delete(schema.file).where(eq(schema.file.id, file.id));
+    await interaction.reply({
+     embeds: [new EmbedBuilder().setTitle('Successful deletion!').setColor(0x22c55e).setDescription(`Successfully deleted ${file.name}!`)],
+     ephemeral: true,
+    });
+   } catch (error) {
+    log('e', error);
+   }
+   break;
+  }
+  case 'bulk_delete': {
+   const files = getUserFiles(+interaction.user.id);
+   const olderThan = interaction.options.getInteger('older_than', true);
+   if (files.length === 0) {
+    await interaction.reply({
+     embeds: [new EmbedBuilder().setTitle('No files to delete!').setColor(0xb91c1c).setDescription('You have no files saved!')],
+     ephemeral: true,
+    });
+   }
+   try {
+    const res = await db
+     .delete(schema.file)
+     .where(and(lte(schema.file.createdAt, new Date(Date.now() - olderThan * 24 * 60 * 60 * 1000)), eq(schema.file.ownerId, +interaction.user.id)))
+     .returning()
+     .execute();
+    console.log(res);
+    await interaction.reply({
+     embeds: [new EmbedBuilder().setTitle('Successful deletion!').setColor(0x22c55e).setDescription(`Successfully deleted ${res.length} files!`)],
+     ephemeral: true,
+    });
+   } catch (error) {
+    log('e', error);
+   }
    break;
   }
   case 'list': {
@@ -75,11 +125,12 @@ export async function execute(interaction: CommandInteraction<any>) {
       new EmbedBuilder()
        .setTitle('Your files')
        .setDescription(
-        `${files.map((file, i) => `${i + 1}) ${file.attachmentUrl} - Uploaded on ${new Date(file.uploadedAt).toLocaleDateString('en-US')}`).join('\n')}
+        `${files.map((file, i) => `${i + 1}) ${file.attachmentUrl} - Uploaded on ${new Date(file.createdAt).toLocaleDateString('en-US')}`).join('\n')}
     `,
        )
        .setFooter({ text: `You currently have ${rows} saved files` }),
      ],
+     ephemeral: true,
     });
    } else if (end - start < 25 && end - start > 0) {
     await interaction.reply('Cannot list more than 25 files at a time!');
@@ -109,38 +160,15 @@ export async function execute(interaction: CommandInteraction<any>) {
      const attachmentUrl = message.attachments.at(0)?.url!;
      await db.insert(schema.file).values({ name: attachment.name!, attachmentUrl, ownerId: +interaction.user.id });
     } else {
-     await interaction.reply('Error while fetching resource, is the url correct?');
+     await interaction.reply({ content: 'Error while fetching resource, is the url correct?', ephemeral: true });
     }
    }
    break;
-  }
-  case 'delete': {
-   const files = getUserFiles(+interaction.user.id);
-   const index = interaction.options.getString('name', true);
-   const file = files[+index];
-   try {
-    await db.delete(schema.file).where(eq(schema.file.id, file.id));
-    await interaction.reply({
-     embeds: [new EmbedBuilder().setTitle('Successful deletion!').setColor(0x22c55e).setDescription(`Successfully deleted ${file.name}!`)],
-     ephemeral: true,
-    });
-   } catch (error) {
-    log('e', error);
-   }
   }
  }
 }
 export async function autocomplete(interaction: AutocompleteInteraction<any>) {
  switch (interaction.options.getSubcommand()) {
-  case 'delete': {
-   if (!interaction.isAutocomplete()) return;
-   const focusedValue = interaction.options.getFocused();
-   const files = getUserFiles(+interaction.user.id);
-   const choices = files.map((file, i) => ({ name: file.name, value: i.toString() }));
-   const filtered = choices.filter(choice => choice.name.startsWith(focusedValue));
-   await interaction.respond(filtered);
-   break;
-  }
   case 'get': {
    if (!interaction.isAutocomplete()) return;
    const focusedValue = interaction.options.getFocused();
@@ -150,7 +178,14 @@ export async function autocomplete(interaction: AutocompleteInteraction<any>) {
    await interaction.respond(filtered);
    break;
   }
-  default:
+  case 'delete': {
+   if (!interaction.isAutocomplete()) return;
+   const focusedValue = interaction.options.getFocused();
+   const files = getUserFiles(+interaction.user.id);
+   const choices = files.map((file, i) => ({ name: file.name, value: i.toString() }));
+   const filtered = choices.filter(choice => choice.name.startsWith(focusedValue));
+   await interaction.respond(filtered);
    break;
+  }
  }
 }

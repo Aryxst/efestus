@@ -8,7 +8,7 @@ export const file = sqliteTable('file', {
   .$defaultFn(() => createId()),
  ownerId: integer('ownerId').notNull(),
  name: text('name').notNull(),
- uploadedAt: integer('joinedAt', { mode: 'timestamp_ms' })
+ createdAt: integer('createdAt', { mode: 'timestamp_ms' })
   .notNull()
   .$defaultFn(() => sql`(unixepoch() * 1000)`),
  attachmentUrl: text('attachmentUrl').notNull(),
