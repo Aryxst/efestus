@@ -10,5 +10,5 @@ jobs
 *out*
 !.env.project
 !.env.vault
-drizzle
 commit.md
+./src/db/migrations

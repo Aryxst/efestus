@@ -16,8 +16,9 @@ export const data = new SlashCommandBuilder()
 
 const parsedBotMetadata = [
  `Bot runtime: Bun ${process.versions.bun}`,
+ `Bot version: ${require('../../../package.json').version}`,
  `Environment: ${process.env.NODE_ENV || 'development'}`,
- `Shell: ${process.env.SHELL?.split('/').pop() || (isDocker() && 'Docker')}`,
+ `Shell: ${process.env.SHELL?.split('/').pop() || (isDocker() && 'Docker') || 'unknown'}`,
  `Platform: ${process.platform}`,
 ].join('\n');
 
@@ -28,7 +29,10 @@ export async function execute(interaction: CommandInteraction) {
   case 'bot':
    await interaction.reply({
     embeds: [
-     new EmbedBuilder().setTitle('Bot Info').setDescription(parsedBotMetadata),
+     new EmbedBuilder()
+      .setTitle('BOT INFO')
+      .setDescription(parsedBotMetadata)
+      .setColor(0x3498db),
     ],
    });
    break;
