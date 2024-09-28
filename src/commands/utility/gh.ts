@@ -46,8 +46,6 @@ export async function execute(interaction: CommandInteraction<any>) {
   undefined,
  ]) as [string?, string?];
 
- console.log({ fileName, lineArgs, start, end });
-
  const res = await fetch(rawUrl);
  if (res.status < 400) {
   const responseText = await res.text();
