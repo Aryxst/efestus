@@ -14,10 +14,9 @@ Efestus is a Discord bot confusing yet powerful because of the tools it was buil
 - 🧪 **Customizable**: The codebase its quite simple to understand.
 
 
-⚠️ Warning
 
-    This project its still in very early stages, what is available now is barebones of what there will be in the future.
-    Quick Note: You may want to sharply edit the source.
+> [!WARNING]
+> This project its still in very early stages, what is available now is barebones of what there will be in the future. Quick Note: You may want to sharply edit the source.
 
 ------
 ## **Installation**
@@ -27,25 +26,24 @@ Requirements:
   * Typescript >= 5.2
   * Windows, Linux(or WSL) or MacOS(not tested)
 ### Bun
-Install [Bun](https://bun.sh/)
+1) Install [Bun](https://bun.sh/)
 ```bash
 # on Linux & MacOS
 curl https://bun.sh/install | bash
 # on Windows
 powershell -c "irm bun.sh/install.ps1 | iex"
 ```
-Clone the repository
+2) Clone the repository
 ```bash
 git clone https://github.com/aryxst/efestus-bot.git
 ```
-
-Create a `.env` file at the root of the cloned repository with this format:
+3) Create a `.env` file at the root of the cloned repository with this format:
 ```ini
 BOT_TOKEN=<YOUR BOT_TOKEN>
 GUILD_ID=<YOUR GUILD_ID>
 CLIENT_ID=<YOUR CLIENT_ID>
 ```
-Run the following:
+4) Run the following:
 ```bash
 # Install dependencies
 bun install --production
@@ -55,7 +53,8 @@ bun db:migrate
 # Run bot
 bun run start
 ```
+5) Done!
+
 ------
 ## **Contributing**
-
 <u>Feel free</u> to open a pull request or an issue.
